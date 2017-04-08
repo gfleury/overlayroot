@@ -1,0 +1,6 @@
+#!/bin/sh
+dracut_install mount
+dracut_install umount
+dracut_install  mkfs.ext4
+inst_hook pre-pivot 10 "$moddir/mount-overlayroot.sh"
+
