@@ -25,26 +25,18 @@ writes and new data are written another filesystem (root-rw).
 
 
 %install
-make install DESTDIR=%{buildroot}/%{_datadir}
+make install BUILDROOT=%{buildroot} DESTDIR=%{_datadir}
 
 
 %files
 %doc README.md
-%if 0%{?fedora}
-%dir %{_prefix}/lib/dracut/modules.d/50overlayroot
-%{_prefix}/lib/dracut/modules.d/50overlayroot/overlayroot-dummy.sh
-%{_prefix}/lib/dracut/modules.d/50overlayroot/overlayroot.sh
-%{_prefix}/lib/dracut/modules.d/50overlayroot/module-setup.sh
-%else
 %if 0%{?amzn} || 0%{?rhel} || 0%{?centos}
 %dir %{_prefix}/share/dracut/modules.d/50overlayroot
-%{_prefix}/share/dracut/modules.d/50overlayroot/overlayroot-dummy.sh
-%{_prefix}/share/dracut/modules.d/50overlayroot/overlayroot.sh
+%{_prefix}/share/dracut/modules.d/50overlayroot/mount-overlayroot.sh
 %{_prefix}/share/dracut/modules.d/50overlayroot/install
-%endif
 %endif
 
 
 %changelog
-* Wed Jan 15 2014 Lars Kellogg-Stedman <lars@redhat.com> - 0.20-3
-- import into RHEL
+* Sun Apr 09 2017 George Fleury <gfleury@gmail.com> - 0.1-beta
+- First version 
