@@ -4,6 +4,7 @@ Mount virtual root fs with rw-fs pointing to one filesystem on top or ro-fs from
 
 Usages examples:
 - EC2 ephemeral storage as RW on top of EBS volumus as a RO. (probably same performance from instances storage). Get instance storage IOPS on EBS root volumes.
+- If the root EBS volume fails, should improve the graceful degradation.
 - Protect root filesystem from modifications.
 
 
