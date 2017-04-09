@@ -36,6 +36,8 @@ make install BUILDROOT=%{buildroot} DESTDIR=%{_datadir}
 %{_prefix}/share/dracut/modules.d/50overlayroot/install
 %endif
 
+%post 
+
 
 %changelog
 * Sun Apr 09 2017 George Fleury <gfleury@gmail.com> - 0.1-beta
