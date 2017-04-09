@@ -132,7 +132,7 @@ mkdir -p /run/root-rw || echo Fail create rw dir
 # Silent fallback if no device specified on conf file
 [ -n "$overlayrootdevice" ] || return
 [ ! -b $overlayrootdevice ] && (echo Overlayroot device not found. Falling back to root device. && return)
-mount $overlayrootdevice /run/root-rw || (mkfs.ext4 -F $overlayrootdevice && mount $overlayrootdevice /run/root-rw || echo Fail mount $overlayrootdevice. Falling back to root device. && return)
+mount $overlayrootdevice /run/root-rw || ((mkfs.ext4 -F $overlayrootdevice && mount $overlayrootdevice /run/root-rw) || (echo Fail mount $overlayrootdevice. Falling back to root device. && return))
 
 mkdir -p /run/root-rw/root
 mkdir -p /run/root-rw/workdir
