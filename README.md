@@ -19,9 +19,11 @@ Usages examples:
 - Recreate initramfs
 - Reboot
 
+```
 	yum install kernel-4.9.20-10.30.amzn1.x86_64 -y 
 	rpm -ivh https://s3.amazonaws.com/gfleury/dracut-modules-overlayroot-0.1-beta.amzn1.noarch.rpm
 	dracut -f /boot/initramfs-4.9.20-10.30.amzn1.x86_64.img initramfs-4.9.20-10.30.amzn1.x86_64.img
 	reboot
+```
 
 [1] https://www.kernel.org/doc/Documentation/filesystems/overlayfs.txt 
