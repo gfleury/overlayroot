@@ -2,6 +2,9 @@
 
 . /lib/dracut-lib.sh
 
+
+clean_path() {
+	# remove '//' in a path.
 	local p="$1" tmp=""
 	while [ "${p#*//}" != "$p" ]; do
 		tmp=${p#*//}
@@ -99,18 +102,18 @@ overlayrootify_fstab() {
 mkdir -p /run/sysroot || echo Fail create ro dir 
 mkdir -p /run/root-rw || echo Fail create rw dir
 
-source $NEWROOT/etc/overlayroot.conf
+[ -f $NEWROOT/etc/overlayroot.conf ] && . $NEWROOT/etc/overlayroot.conf
 # Silent fallback if no device specified on conf file
 [ -n "$overlayrootdevice" ] || return
-[ ! -b $overlayrootdevice ] && echo Overlayroot device not found. Falling back to root device. && return
-mount $overlayrootdevice /run/root-rw || mkfs.ext4 -F $overlayrootdevice && mount $overlayrootdevice /run/root-rw || echo Fail mount $overlayrootdevice. Falling back to root device. && return
+[ ! -b $overlayrootdevice ] && (echo Overlayroot device not found. Falling back to root device. && return)
+mount $overlayrootdevice /run/root-rw || (mkfs.ext4 -F $overlayrootdevice && mount $overlayrootdevice /run/root-rw || echo Fail mount $overlayrootdevice. Falling back to root device. && return)
 
 mkdir -p /run/root-rw/root
 mkdir -p /run/root-rw/workdir
 
-mount --move $NEWROOT /run/sysroot
+mount --move $NEWROOT /run/sysroot || (echo Failed to move $NEWROOT to /run/sysroot. && return)
 
-mount -t overlay -o lowerdir=/run/sysroot,upperdir=/run/root-rw/root,workdir=/run/root-rw/workdir overlay $NEWROOT  || mount --move /run/sysroot $NEWROOT && echo Failed to mount overlay root filesystem. Falling back to root device. && return
+mount -t overlay -o lowerdir=/run/sysroot,upperdir=/run/root-rw/root,workdir=/run/root-rw/workdir overlay $NEWROOT  || (mount --move /run/sysroot $NEWROOT && echo Failed to mount overlay root filesystem. Falling back to root device. && return)
 
 mkdir -p /sysroot/run/sysroot
 mkdir -p /sysroot/run/root-rw
