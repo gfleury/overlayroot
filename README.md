@@ -13,7 +13,7 @@ Usages examples:
 
 ## Using
 
-- Spin up an Amazon Linux instance with ephemeral storage
+- Spin up an Amazon Linux instance with root EBS volume and with ephemeral storage
 - Update to latest version 
 - Install the overlayroot package
 - Recreate initramfs
