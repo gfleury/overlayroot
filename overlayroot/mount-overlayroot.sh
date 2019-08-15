@@ -143,8 +143,11 @@ mount $overlayrootdevice /run/root-rw || ((mkfs.ext4 -F $overlayrootdevice && mo
 mkdir -p /run/root-rw/root
 mkdir -p /run/root-rw/workdir
 
+mount --make-private $NEWROOT 2>> /run/.overlayroot.log
+mount --make-private / 2>> /run/.overlayroot.log
+mount --make-private /run 2>> /run/.overlayroot.log
 # Move the original root filesystem mount point to the new directory
-mount --move $NEWROOT /run/sysroot || (echo Failed to move $NEWROOT to /run/sysroot. && return 1)
+mount --move $NEWROOT /run/sysroot 2>> /run/.overlayroot.log || (echo Failed to move $NEWROOT to /run/sysroot. && return 1)
 [ $? = 0 ] || return
 
 # Try to mount overlay, if fail fallback to original root filesystem.
