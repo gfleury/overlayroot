@@ -90,6 +90,8 @@ overlayrootify_fstab() {
 			else
 				echo "${line}"
 			fi
+		elif [ "$file" = "/boot" ]; then
+			echo "${line}"
 		else
 			#ospec="${root_ro}${file}"
 			ospec="${fstype}"

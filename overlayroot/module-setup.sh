@@ -14,6 +14,7 @@ depends() {
 
 installkernel() {
     instmods overlay
+    instmods "=fs/overlayfs"
 }
 
 install() {
