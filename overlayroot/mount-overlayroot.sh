@@ -90,9 +90,7 @@ overlayrootify_fstab() {
 			else
 				echo "${line}"
 			fi
-		elif [ "$file" = "/boot" ]; then
-			echo "${line}"
-		else
+		elif [ "$file" = "/" ]; then
 			#ospec="${root_ro}${file}"
 			ospec="${fstype}"
 			copy_opts=""
@@ -121,6 +119,8 @@ overlayrootify_fstab() {
 				echo "$line"
 				[ "$file" = "/" ] && dirs="${dirs} ${upper}"
 			fi
+		else
+			echo "${line}"
 		fi
 	done < "$input"
 	_RET=${dirs# }
