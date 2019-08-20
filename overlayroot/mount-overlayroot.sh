@@ -90,7 +90,7 @@ overlayrootify_fstab() {
 			else
 				echo "${line}"
 			fi
-		else
+		elif [ "$file" = "/" ]; then
 			#ospec="${root_ro}${file}"
 			ospec="${fstype}"
 			copy_opts=""
@@ -119,6 +119,8 @@ overlayrootify_fstab() {
 				echo "$line"
 				[ "$file" = "/" ] && dirs="${dirs} ${upper}"
 			fi
+		else
+			echo "${line}"
 		fi
 	done < "$input"
 	_RET=${dirs# }
@@ -136,15 +138,18 @@ mkdir -p /run/root-rw || echo Fail create rw dir
 [ $? != 0 ] || return
 
 # Mount and/or format the ephemeral device 
-mount $overlayrootdevice /run/root-rw || ((mkfs.ext4 -F $overlayrootdevice && mount $overlayrootdevice /run/root-rw) || (echo Fail mount $overlayrootdevice. Falling back to root device. && return 1))
+mount $overlayrootdevice /run/root-rw || ((mkfs.xfs -f $overlayrootdevice && mount $overlayrootdevice /run/root-rw) || (echo Fail mount $overlayrootdevice. Falling back to root device. && return 1))
 [ $? = 0 ] || return
 
 # Create working directories to the RW filesystem
 mkdir -p /run/root-rw/root
 mkdir -p /run/root-rw/workdir
 
+mount --make-private $NEWROOT 2>> /run/.overlayroot.log
+mount --make-private / 2>> /run/.overlayroot.log
+mount --make-private /run 2>> /run/.overlayroot.log
 # Move the original root filesystem mount point to the new directory
-mount --move $NEWROOT /run/sysroot || (echo Failed to move $NEWROOT to /run/sysroot. && return 1)
+mount --move $NEWROOT /run/sysroot 2>> /run/.overlayroot.log || (echo Failed to move $NEWROOT to /run/sysroot. && return 1)
 [ $? = 0 ] || return
 
 # Try to mount overlay, if fail fallback to original root filesystem.
