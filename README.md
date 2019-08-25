@@ -11,7 +11,15 @@ Usages examples:
 
 ## Latest version:
 
-- https://s3.amazonaws.com/gfleury/dracut-modules-overlayroot-0.1-beta.amzn1.noarch.rpm
+- CentOS5/6, Amazon Linux 1
+  - https://github.com/gfleury/overlayroot/releases/download/v0.1/dracut-modules-overlayroot-0.1-beta.el7.noarch.rpm  
+- CentOS7, Amazon Linux 2
+  - https://github.com/gfleury/overlayroot/releases/download/v0.1/dracut-modules-overlayroot-0.2-beta.el7.noarch.rpm
+
+## Known problems
+
+- Only support one filesystem per system (Only rootfs)
+
 
 ## Using
 
